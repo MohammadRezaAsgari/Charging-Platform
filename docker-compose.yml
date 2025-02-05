@@ -1,0 +1,42 @@
+version: "2.0"
+
+services:
+  chp:
+    image: chp-django:2025.02.05.dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REQUIREMENTS_FILE: "requirements.txt"
+    command: ["sh", "/start.sh"]
+    restart: always
+    ports:
+      - 8000:8000
+    depends_on:
+      - chp-db
+    env_file:
+      - .env
+    volumes:
+      - .:/home/chp/chp-backend
+    networks:
+      - chp-network
+    tty: true
+    stdin_open: true
+
+  chp-db:
+    image: postgres:13.5
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - chp_postgres_data_storage:/var/lib/postgresql/data/pgdata
+    ports:
+        - "5432:5432"
+    networks:
+      - chp-network
+
+volumes:
+  chp_postgres_data_storage:
+
+networks:
+    chp-network:
