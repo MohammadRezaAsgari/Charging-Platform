@@ -42,31 +42,31 @@ class LoginOutputSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = [
+        fields = (
             "username",
             "first_name",
             "last_name",
             "access",
             "refresh",
             "access_token_expires_at",
-        ]
+        )
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = [
+        fields = (
             "first_name",
             "last_name",
-        ]
+        )
 
 
 class UserProfileInputSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = [
+        fields = (
             "first_name",
             "last_name",
-        ]
+        )

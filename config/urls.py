@@ -37,4 +37,5 @@ urlpatterns = [
         name="redoc",
     ),
     path("api/", include("users.urls", namespace="users")),
+    path("api/", include("wallet.urls", namespace="wallet")),
 ]

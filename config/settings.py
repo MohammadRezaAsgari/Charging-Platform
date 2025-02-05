@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # local apps
     "users",
+    "wallet",
 ]
 
 MIDDLEWARE = [
@@ -177,3 +178,6 @@ SPECTACULAR_SETTINGS = {
     "SCHEMA_PATH_PREFIX": "/api/v1",
     "COMPONENT_SPLIT_REQUEST": True,
 }
+
+
+DEFAULT_CURRENCY_SIGN = "USD"
