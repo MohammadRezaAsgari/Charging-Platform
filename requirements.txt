@@ -7,3 +7,6 @@ gevent>=22.10.0
 phonenumbers==8.12.49
 psycopg2-binary==2.9.2
 pyjwt~=2.4.0
+factory-boy==3.2.0
+Faker==30.0.0
+whitenoise==5.3.0
