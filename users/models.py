@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.db import models
+from django.db import models, transaction
 
 from users.managers import CustomUserManager
 
@@ -18,3 +18,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.first_name or ''} {self.last_name or ''}"
+
+    def save(self, *args, **kwargs):
+        from wallet.models import Wallet
+
+        created = False
+        if not self.pk:
+            created = True
+
+        with transaction.atomic():
+            super().save(*args, **kwargs)
+
+            if created:
+                Wallet.objects.create(user=self)
