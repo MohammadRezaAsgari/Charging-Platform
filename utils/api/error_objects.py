@@ -18,3 +18,5 @@ class ErrorObject(dict, Enum):
     USER_NOT_FOUND = {"code": 1102, "msg": "USER_NOT_FOUND"}
     # Wallet app
     NOT_SAME_CURRENCY = {"code": 1201, "msg": "NOT_SAME_CURRENCY"}
+    # charge app
+    NOT_ENOUGH_BALANCE = {"code": 1301, "msg": "NOT_ENOUGH_BALANCE"}
