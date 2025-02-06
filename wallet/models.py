@@ -75,8 +75,8 @@ class Wallet(models.Model):
             self.currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY_SIGN)
         super().save(*args, **kwargs)
 
-    def has_enough_credit(self, price):
-        if price > self.balance:
+    def has_enough_credit(self, amount):
+        if amount > self.balance:
             return False
         return True
 
@@ -91,15 +91,11 @@ class Invoice(TimeStampedModel):
     user = models.ForeignKey(
         "users.User",
         related_name="invoices",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
     )
     amount = models.DecimalField(
         decimal_places=2,
         max_digits=14,
-        null=True,
-        blank=True,
     )
     status = models.PositiveSmallIntegerField(
         choices=StatusTypes.choices, default=StatusTypes.PENDING

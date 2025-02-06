@@ -11,7 +11,7 @@ from wallet.api.v1.serializers import (
     OutputInvoiceListSerializer,
     WalletSerializer,
 )
-from wallet.models import Invoice, Wallet
+from wallet.models import Invoice
 from utils.api.responses import success_response, error_response
 from utils.api.error_objects import ErrorObject
 from utils.api.mixins import BadRequestSerializerMixin
@@ -19,11 +19,6 @@ from utils.loggers import stdout_logger
 
 
 class InvoiceListAPIView(BadRequestSerializerMixin, ListAPIView):
-    """
-    Gets the list of invoices of the company.
-    status options: `1: pending`, `2: paid`, `3: failed`
-    """
-
     permission_classes = [IsAuthenticatedAndActive]
     serializer_class = OutputInvoiceListSerializer
     filter_backends = [DjangoFilterBackend]
