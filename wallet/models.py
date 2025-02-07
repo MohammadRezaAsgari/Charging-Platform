@@ -127,15 +127,17 @@ class Invoice(TimeStampedModel):
                 break
 
     def set_failed(self):
-        self.status = self.StatusTypes.FAILED
-        self.save()
+        if self.status == Invoice.StatusTypes.PENDING:
+            self.status = self.StatusTypes.FAILED
+            self.save()
 
     @transaction.atomic
     def set_paid(self):
-        user_wallet = Wallet.objects.select_for_update().get(user=self.user)
-        user_wallet.balance += self.amount
-        user_wallet.save()
+        if self.status == Invoice.StatusTypes.PENDING:
+            user_wallet = Wallet.objects.select_for_update().get(user=self.user)
+            user_wallet.balance += self.amount
+            user_wallet.save()
 
-        self.status = self.StatusTypes.PAID
-        self.paid_date = timezone.now()
-        self.save()
+            self.status = self.StatusTypes.PAID
+            self.paid_date = timezone.now()
+            self.save()

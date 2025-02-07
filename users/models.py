@@ -43,7 +43,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         user_wallet.save()
 
         task_set_charge_on_phone(
-            phone_number=kwargs.get("phone"), amount=kwargs.get("amount")
+            phone_number=kwargs.get("phone"),
+            amount=kwargs.get("amount"),
+            currency=kwargs.get("currency"),
         )
 
         Charging.objects.create(

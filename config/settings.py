@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -178,6 +179,62 @@ SPECTACULAR_SETTINGS = {
     },
     "SCHEMA_PATH_PREFIX": "/api/v1",
     "COMPONENT_SPLIT_REQUEST": True,
+}
+
+
+# Logging config
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
+        },
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+        },
+    },
+    "formatters": {
+        "console_debug": {
+            "format": "{levelname} {name} {asctime} {pathname} {module} {funcName} {lineno} {message}",
+            "style": "{",
+        },
+        "verbose": {
+            "format": "{levelname} {name} {asctime} {pathname} {module} {funcName} {lineno} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console_debug": {
+            "level": "DEBUG",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "console_debug",
+        },
+        "verbose": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "stream": sys.stdout,
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "debug_logging": {
+            "handlers": [
+                "console_debug",
+            ],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        # "" for all logs
+        "stdout_logging": {
+            "handlers": [
+                "verbose",
+            ],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
 }
 
 

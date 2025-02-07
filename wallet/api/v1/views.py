@@ -92,6 +92,12 @@ class InvoiceByIDAPIView(BadRequestSerializerMixin, APIView):
                 status_code=status.HTTP_404_NOT_FOUND,
             )
 
+        if invoice_obj.status != Invoice.StatusTypes.PENDING:
+            return error_response(
+                error=ErrorObject.CANNOT_CHANGE_ANYMORE,
+                status_code=status.HTTP_406_NOT_ACCEPTABLE,
+            )
+
         serializer = InvoiceUpdateSerializer(
             invoice_obj, data=request.data, partial=True
         )
