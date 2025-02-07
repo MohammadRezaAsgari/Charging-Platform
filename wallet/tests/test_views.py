@@ -70,11 +70,15 @@ class TestInvoiceByIDAPIView(APITestCase):
         data = {"status": Invoice.StatusTypes.PAID}
         response = self.client.patch(self.url, data)
         self.assertEqual(response.status_code, 204)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.wallet.balance, self.invoice.amount)
 
     def test_update_invoice_not_found(self):
         url = reverse("wallet:v1:invoice_detail", kwargs={"invoice_id": 9999})
         response = self.client.patch(url, {"status": Invoice.StatusTypes.PAID})
         self.assertEqual(response.status_code, 404)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.wallet.balance, Decimal(0))
 
     def test_patch_not_pending_invoice_failed(self):
         self.invoice.status = Invoice.StatusTypes.PAID
@@ -82,12 +86,16 @@ class TestInvoiceByIDAPIView(APITestCase):
         data = {"status": Invoice.StatusTypes.FAILED}
         response = self.client.patch(self.url, data)
         self.assertEqual(response.status_code, 406)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.wallet.balance, Decimal(0))
 
     def test_patch_as_non_admin_user_fail(self):
         self.client.force_authenticate(user=self.user)
         data = {"status": Invoice.StatusTypes.PAID}
         response = self.client.patch(self.url, data)
         self.assertEqual(response.status_code, 403)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.wallet.balance, Decimal(0))
 
     def test_resolve_url(self):
         resolver = resolve(f"/api/v1/wallet/invoices/{self.invoice.id}/")
