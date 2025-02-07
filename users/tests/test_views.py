@@ -10,6 +10,8 @@ from utils.api.error_objects import ErrorObject
 
 
 class TestLoginPasswordAPIView(APITestCase):
+    fixtures = ["wallet/fixtures/currencies.json"]
+
     def setUp(self):
         self.url = reverse("users:v1:login_password")
         self.username = "roham"
@@ -85,6 +87,8 @@ class TestLoginPasswordAPIView(APITestCase):
 
 
 class TestUserProfileAPIView(APITestCase):
+    fixtures = ["wallet/fixtures/currencies.json"]
+
     def setUp(self):
         self.url = reverse("users:v1:user_profile")
         self.username = "roham"

@@ -13,7 +13,7 @@ urlpatterns = [
     path(
         "wallet/invoices/<int:invoice_id>/",
         InvoiceByIDAPIView.as_view(),
-        name="invoice_details",
+        name="invoice_detail",
     ),
     path("wallet/balance/", WalletAPIView.as_view(), name="wallet"),
 ]
