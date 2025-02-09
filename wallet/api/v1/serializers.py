@@ -38,9 +38,11 @@ class InputInvoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invoice
         fields = (
+            "id",
             "amount",
             "currency",
         )
+        read_only_fields = ("id",)
 
     def validate(self, attrs):
         if attrs.get("amount") <= 0:
